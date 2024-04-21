@@ -17,7 +17,7 @@ const truncate = require('@turf/truncate').default
 const {writeCsv} = require('./lib/csv')
 const {getCulturesMap, getCulturesSpecialesMap} = require('./lib/cultures')
 const {getDateMutation, getIdParcelle, getCodeCommune, getPrefixeSection, getCodePostal, parseFloat} = require('./lib/parse')
-const {getParcellesCommune} = require('./lib/parcelles')
+const {getParcellesDepartement} = require('./lib/parcelles')
 const {getCommune, getCommuneActuelle, getCodeDepartement, getCommuneFromCadastre} = require('./lib/recog')
 
 function convertRow(row, {culturesMap, culturesSpecialesMap}) {
@@ -88,6 +88,14 @@ function convertRow(row, {culturesMap, culturesSpecialesMap}) {
   return converted
 }
 
+function getDepartements() {
+  return Array
+      .from({length: 95}, (e, i) => i + 1)
+      .filter((d) => d !== 20)
+      .map((d) => ("0" + d).slice(-2))
+      .concat("2A", "2B", "971", "972", "973", "974", "976")
+}
+
 async function main() {
   const culturesMap = await getCulturesMap()
   const culturesSpecialesMap = await getCulturesSpecialesMap()
@@ -121,16 +129,22 @@ async function main() {
     ))
 
     /* Géocodage à la parcelle */
-
     if (process.env.DISABLE_GEOCODING !== '1') {
       console.log('Géocodage à la parcelle')
 
-      const communesRows = groupBy(rows, r => r.id_parcelle.substr(0, 5))
-      await bluebird.map(Object.keys(communesRows), async codeCommune => {
-        const communeRows = communesRows[codeCommune]
-        const parcelles = await getParcellesCommune(codeCommune)
+      const departements = getDepartements();
 
-        communeRows.forEach(row => {
+      for (const d of departements) {
+        console.log(`Récupération des parcelles du département ${d}`)
+        const parcelles = await getParcellesDepartement(d)
+
+        console.log(`Ajout des coordonnées du département ${d}`)
+
+        await bluebird.map(rows, async row => {
+          if (row.latitude) {
+            return;
+          }
+
           if (row.ancien_id_parcelle in parcelles) {
             row.id_parcelle = row.ancien_id_parcelle
             row.ancien_id_parcelle = undefined
@@ -142,8 +156,13 @@ async function main() {
             row.longitude = lon
             row.latitude = lat
           }
-        })
-      }, {concurrency: 8})
+        }, {concurrency: 8})
+      }
+
+      const rowsWithNoCoordinates = rows.filter((row) => {
+        return !row.latitude;
+      }).length;
+      console.log(rowsWithNoCoordinates + " données sans coordonnées");
     }
 
     /* Export des données à la commune */
