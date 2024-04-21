@@ -42,6 +42,22 @@ yarn improve-csv
 
 Le traitement dure plusieurs dizaines de minutes et écrit les résultats dans le dossier `/dist`.
 
+## Notes après la mise à jour d'avril 2024
+
+Pour les données de 2023, il reste 1.4% des données sans géolocalisation à cause des parcelles différente
+des parcelles du cadastre.
+
+Par exemple pour la commune de Gond Pontouvre, il semble que des ventes récentes référencent
+l'ancienne numérotation des parcelles, malgré le [remaniement du
+cadastre](https://www.gond-pontouvre.fr/2021/03/09/remaniement-du-cadastre/).
+
+Pour avoir plus de correspondances possibles, il faudrait regarder le cadastre de chaque année
+(depuis 2017 par exemple) depuis:
+https://files.data.gouv.fr/cadastre/etalab-cadastre/
+https://cadastre.data.gouv.fr/data/etalab-cadastre/
+
+Peut être même [l'historique des parcelles cadastrales](https://www.data.gouv.fr/fr/datasets/historique-des-parcelles-cadastrales-filiation/#/discussions) (mentionné [içi](https://github.com/datagouv/dvf/issues/20#issue-1222746867)).
+
 ## Licence
 
 MIT
