@@ -25,7 +25,7 @@ Ces fichiers doivent avoir la forme `valeursfoncieres-YYYY.txt.gz` avec YYYY cor
 Pour configurer le script vous devez créer un fichier `.env` à la racine du dossier.
 
 ```
-CADASTRE_MILLESIME=2023-01-01
+CADASTRE_MILLESIME=2024-01-01
 COG_MILLESIME=2023-01-01
 ANNEES=2023
 ```
