@@ -19,6 +19,7 @@ const {getCulturesMap, getCulturesSpecialesMap} = require('./lib/cultures')
 const {getDateMutation, getIdParcelle, getCodeCommune, getPrefixeSection, getCodePostal, parseFloat} = require('./lib/parse')
 const {getParcellesDepartement} = require('./lib/parcelles')
 const {getCommune, getCommuneActuelle, getCodeDepartement, getCommuneFromCadastre} = require('./lib/recog')
+const {getLonLat} = require("./lib/turf");
 
 function convertRow(row, {culturesMap, culturesSpecialesMap}) {
   const dateMutation = getDateMutation(row)
@@ -136,7 +137,7 @@ async function main() {
 
       for (const d of departements) {
         console.log(`Récupération des parcelles du département ${d}`)
-        const parcelles = await getParcellesDepartement(d)
+        const parcelles = await getParcellesDepartement(d, process.env.CADASTRE_MILLESIME)
 
         console.log(`Ajout des coordonnées du département ${d}`)
 
@@ -151,8 +152,7 @@ async function main() {
           }
 
           if (row.id_parcelle in parcelles) {
-            const parcelle = parcelles[row.id_parcelle]
-            const [lon, lat] = truncate(centroid(parcelle), {precision: 6}).geometry.coordinates
+            const [lon, lat] = getLonLat(parcelles[row.id_parcelle])
             row.longitude = lon
             row.latitude = lat
           }

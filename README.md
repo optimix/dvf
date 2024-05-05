@@ -42,7 +42,7 @@ yarn improve-csv
 
 Le traitement dure plusieurs dizaines de minutes et écrit les résultats dans le dossier `/dist`.
 
-## Notes après la mise à jour d'avril 2024
+## Notes après la mise à jour d'avril/mai 2024
 
 Pour les données de 2023, il reste 1.4% des données sans géolocalisation à cause des parcelles différente
 des parcelles du cadastre.
@@ -57,6 +57,22 @@ https://files.data.gouv.fr/cadastre/etalab-cadastre/
 https://cadastre.data.gouv.fr/data/etalab-cadastre/
 
 Peut être même [l'historique des parcelles cadastrales](https://www.data.gouv.fr/fr/datasets/historique-des-parcelles-cadastrales-filiation/#/discussions) (mentionné [içi](https://github.com/datagouv/dvf/issues/20#issue-1222746867)).
+
+Il est possible d'utiliser [parcels-index](https://github.com/optimix/parcels-index) pour trouver l'année et le département
+des parcelles qui n'ont toujours pas de latitude et longitude.
+Le dépôt en question génère un fichier `parcels-matches.csv` qui peut être utilisé à nouveau avec `find-parcels-lat-long.js`
+de ce dépôt afin de trouver les latitudes et longitudes manquantes.
+
+Si vous avez généré un fichier `parcels-matches.csv`, vous pouvez utiliser ceci pour décorer les parcelles avec une
+latitude et longitude:
+
+```bash
+node --max-old-space-size=8192 find-parcels-lat-long
+```
+
+Cela va générer un nouveau fichier `parcels-matches-lon-lat.csv` avec le géolocalisation des parcelles.
+
+Enfin, il restera une étape de plus à réaliser pour récupérer cette géolocalisation et décorer les fichiers `.csv` générés dans `dist/`.
 
 ## Licence
 
