@@ -40,13 +40,16 @@ const main = async () => {
         const date = dateAndDepartmentArray[0]
         const department = dateAndDepartmentArray[1]
 
-        console.log(`Récupération des parcelles du millesime ${date} et département ${department}`)
+        console.log(`${new Date().getTime() / 1000}: Récupération des parcelles du millesime ${date} et département ${department}`)
 
-        const parcelles = await getParcellesDepartement(department, date)
+        const parcelsToDecorate = parcelsByDateAndDepartment[dateAndDepartment]
+
+        const parcelIdsToFind = parcelsToDecorate.map((p) => p.parcel)
+
+        const parcelles = await getParcellesDepartement(department, date, parcelIdsToFind)
 
         console.log('Récupération des latitudes et longitudes...')
 
-        const parcelsToDecorate = parcelsByDateAndDepartment[dateAndDepartment]
         for (const parcelToDecorate of parcelsToDecorate) {
             const parcelle = parcelles[parcelToDecorate.parcel]
             const [lon, lat] = getLonLat(parcelle)

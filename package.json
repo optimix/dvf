@@ -28,7 +28,8 @@
     "lodash": "^4.17.20",
     "pumpify": "^2.0.1",
     "stream-json": "^1.8.0",
-    "stream-chain": "^2.2.5"
+    "stream-chain": "^2.2.5",
+    "line-transform-stream": "^1.0.1"
   },
   "devDependencies": {
     "xo": "^0.34.2"
