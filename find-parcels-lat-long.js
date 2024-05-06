@@ -48,6 +48,7 @@ const processOne = (parcelsByDateAndDepartment, dateAndDepartmentArray) => {
         worker.on('exit', code => {
             if (code !== 0) {
                 reject(new Error(`Worker exited with code ${code}`))
+                return;
             }
             console.log('Worker exited ok')
             resolve()
