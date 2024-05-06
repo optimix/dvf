@@ -44,15 +44,13 @@ const processOne = (parcelsByDateAndDepartment, dateAndDepartmentArray) => {
                 dateAndDepartmentArray
             }
         })
-
-        worker.on('message', _ => {
-            return resolve
-        })
         worker.on('error', reject)
         worker.on('exit', code => {
             if (code !== 0) {
-                reject(new Error(`Worker exited; code ${code}`))
+                reject(new Error(`Worker exited with code ${code}`))
             }
+            console.log('Worker exited ok')
+            resolve()
         })
     });
 }
