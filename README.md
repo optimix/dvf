@@ -70,7 +70,7 @@ latitude et longitude:
 node --max-old-space-size=8192 find-parcels-lat-long
 ```
 
-Cela va générer un nouveau fichier `parcels-matches-lon-lat.csv` avec le géolocalisation des parcelles.
+Cela va générer plusieurs nouveaux fichiers `parcels-matches-lon-lat-<nombre>.csv` avec le géolocalisation des parcelles.
 
 Enfin, il restera une étape de plus à réaliser pour récupérer cette géolocalisation et décorer les fichiers `.csv` générés dans `dist/`.
 

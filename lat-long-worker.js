@@ -6,6 +6,7 @@ const workerData = require('node:worker_threads').workerData
 const process = async () => {
     const dateAndDepartmentArray = workerData.dateAndDepartmentArray;
     const parcelsByDateAndDepartment = workerData.parcelsByDateAndDepartment;
+    const number = workerData.number;
 
     for (const dateAndDepartment of dateAndDepartmentArray) {
         const dateAndDepartmentParts = dateAndDepartment.split("&")
@@ -29,7 +30,7 @@ const process = async () => {
             parcelToDecorate.latitude = lat
         }
 
-        const fsWriteStream = fs.createWriteStream('parcels-matches-lon-lat.csv', {flags: 'a'})
+        const fsWriteStream = fs.createWriteStream(`parcels-matches-lon-lat-${number}.csv`, {flags: 'a'})
         for (const decoratedParcel of parcelsToDecorate) {
             //TODO: dummy CSV - a CSV lib would probably be better
             const csv = decoratedParcel.parcel + ',' + decoratedParcel.date + ',' + decoratedParcel.department +

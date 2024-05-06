@@ -36,12 +36,13 @@ function splitToNChunks(array, n) {
     return result;
 }
 
-const processOne = (parcelsByDateAndDepartment, dateAndDepartmentArray) => {
+const processOne = (parcelsByDateAndDepartment, dateAndDepartmentArray, index) => {
     return new Promise((resolve, reject) => {
         const worker = new Worker("./lat-long-worker.js", {
             workerData: {
                 parcelsByDateAndDepartment,
-                dateAndDepartmentArray
+                dateAndDepartmentArray,
+                number: (index + 1)
             }
         })
         worker.on('error', reject)
@@ -57,8 +58,8 @@ const processOne = (parcelsByDateAndDepartment, dateAndDepartmentArray) => {
 }
 
 const processInParallel = (parcelsByDateAndDepartment, dateAndDepartmentArrays) => {
-    return dateAndDepartmentArrays.map((dateAndDepartmentArray) => {
-        return processOne(parcelsByDateAndDepartment, dateAndDepartmentArray);
+    return dateAndDepartmentArrays.map((dateAndDepartmentArray, index) => {
+        return processOne(parcelsByDateAndDepartment, dateAndDepartmentArray, index);
     });
 }
 
