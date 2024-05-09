@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "xo",
     "improve-csv": "node --max-old-space-size=8192 improve-csv",
-    "find-parcels-lat-long": "node --max-old-space-size=8192 find-parcels-lat-long"
+    "find-parcels-lat-long": "node --max-old-space-size=8192 find-parcels-lat-long",
+    "decorate-csv-with-lat-long": "node --max-old-space-size=8192 decorate-csv-with-lat-long"
   },
   "dependencies": {
     "@etalab/decoupage-administratif": "3.1.1",

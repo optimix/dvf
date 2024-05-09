@@ -58,21 +58,30 @@ https://cadastre.data.gouv.fr/data/etalab-cadastre/
 
 Peut être même [l'historique des parcelles cadastrales](https://www.data.gouv.fr/fr/datasets/historique-des-parcelles-cadastrales-filiation/#/discussions) (mentionné [içi](https://github.com/datagouv/dvf/issues/20#issue-1222746867)).
 
+### Améliorations des résultats avec plus de géolocalisations
+
 Il est possible d'utiliser [parcels-index](https://github.com/optimix/parcels-index) pour trouver l'année et le département
 des parcelles qui n'ont toujours pas de latitude et longitude.
 Le dépôt en question génère un fichier `parcels-matches.csv` qui peut être utilisé à nouveau avec `find-parcels-lat-long.js`
 de ce dépôt afin de trouver les latitudes et longitudes manquantes.
 
-Si vous avez généré un fichier `parcels-matches.csv`, vous pouvez utiliser ceci pour décorer les parcelles avec une
-latitude et longitude:
+Avec un fichier généré `parcels-matches.csv`, il est possible de décorer les parcelles avec une latitude et longitude:
 
 ```bash
-node --max-old-space-size=8192 find-parcels-lat-long
+npm run find-parcels-lat-long
 ```
 
-Cela va générer plusieurs nouveaux fichiers `parcels-matches-lon-lat-<nombre>.csv` avec le géolocalisation des parcelles.
+Cela génère plusieurs nouveaux fichiers `parcels-matches-lon-lat-<nombre>.csv` avec le géolocalisation des parcelles. Et il est possible de coller ensemble tous les fichiers:
+```bash
+cat parcels-matches-lon-lat-?.csv >> parcels-matches-lon-lat-full.csv
+```
 
-Enfin, il restera une étape de plus à réaliser pour récupérer cette géolocalisation et décorer les fichiers `.csv` générés dans `dist/`.
+Ensuite, les fichiers générés précédemment dans `dist/` peuvent être décorés avec les latitudes et longitudes trouvés:
+```bash
+npm run decorate-csv-with-lat-long dist/2023/full.csv parcels-matches-lon-lat-full.csv 
+```
+
+A la fin, un nouveau fichier `dist/2023/full-decorated.csv` sera généré.
 
 ## Licence
 
